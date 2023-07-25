@@ -24,10 +24,10 @@ interface RequestState {
   dropoff_details: DropLocation;
   dropoff_detail_all: DropLocation[];
   estimatedPrices: EstimatedPrices[];
-  setPickupDetails: (data: any) => void; // no-unused-vars
-  setDropoffDetails: (data: any) => void; // no-unused-vars
-  setDropoffDetailAll: (data: any) => void; // no-unused-vars
-  setEstimatedPrices: (data: any) => void; // no-unused-vars
+  setPickupDetails: (data: any) => void;
+  setDropoffDetails: (data: any) => void;
+  setDropoffDetailAll: (data: any) => void;
+  setEstimatedPrices: (data: any) => void;
 }
 
 export const useRequestState = create<RequestState>()((set) => ({

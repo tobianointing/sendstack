@@ -27,7 +27,6 @@ export const PackageDetailForm = (props: FormStepType) => {
   const [
     pickup_details,
     dropoff_details,
-
     setEstimatedPrices,
     setDropoffDetailAll,
   ] = useRequestState((state) => [
