@@ -27,19 +27,19 @@ export const PackageDetailForm = (props: FormStepType) => {
   const [
     pickup_details,
     dropoff_details,
-    estimatedPrices,
+
     setEstimatedPrices,
     setDropoffDetailAll,
   ] = useRequestState((state) => [
     state.pickup_details,
     state.dropoff_details,
-    state.estimatedPrices,
     state.setEstimatedPrices,
     state.setDropoffDetailAll,
   ]);
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setDropoffDetailAll(dropoff_details);
+    console.log(data);
 
     const jsonData = await fetchEstimatedPrice(pickup_details, dropoff_details);
 
@@ -117,6 +117,3 @@ export const PackageDetailForm = (props: FormStepType) => {
     </>
   );
 };
-function useEffect(arg0: () => void, arg1: never[]) {
-  throw new Error("Function not implemented.");
-}

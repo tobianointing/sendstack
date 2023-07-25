@@ -4,13 +4,10 @@ import format from "date-fns/format";
 import { DetailItemCard } from "../DetailItemCard";
 
 export const EstimateDetail = () => {
-  const [pickup_details, dropoff_details, estimatedPrices] = useRequestState(
-    (state) => [
-      state.pickup_details,
-      state.dropoff_details,
-      state.estimatedPrices,
-    ]
-  );
+  const [pickup_details, estimatedPrices] = useRequestState((state) => [
+    state.pickup_details,
+    state.estimatedPrices,
+  ]);
 
   return (
     <div className="space-y-4">

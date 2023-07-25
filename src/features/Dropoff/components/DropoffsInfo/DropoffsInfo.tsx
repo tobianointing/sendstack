@@ -5,13 +5,13 @@ import format from "date-fns/format";
 import { DetailItemCard } from "../DetailItemCard";
 
 export const DropoffsInfo = (props: FormStepType) => {
-  const [pickup_details, dropoff_details, estimatedPrices, dropoff_detail_all] =
-    useRequestState((state) => [
+  const [pickup_details, estimatedPrices, dropoff_detail_all] = useRequestState(
+    (state) => [
       state.pickup_details,
-      state.dropoff_details,
       state.estimatedPrices,
       state.dropoff_detail_all,
-    ]);
+    ]
+  );
 
   return (
     <div className="space-y-4">
@@ -45,10 +45,7 @@ export const DropoffsInfo = (props: FormStepType) => {
                 "iiii, MMM do"
               )}, from 2 pm - 7 pm`}
             />
-            <DetailItemCard
-              title={"Delivery Price "}
-              value={`${estimatedPrices[0].price}`}
-            />
+            <DetailItemCard title={"Delivery Price "} value={`${price}`} />
           </div>
         );
       })}

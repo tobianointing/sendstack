@@ -27,6 +27,7 @@ export const DropoffDateForm = (props: FormStepType) => {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log(data);
     {
       props.onNext && props.onNext();
     }

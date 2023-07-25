@@ -25,3 +25,5 @@ export const RequestInputField = forwardRef<HTMLInputElement, Props>(
     );
   }
 );
+
+RequestInputField.displayName = "RequestInputField";
