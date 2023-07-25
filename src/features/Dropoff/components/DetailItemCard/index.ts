@@ -1,0 +1,1 @@
+export { DetailItemCard } from "./DetailItemCard";
