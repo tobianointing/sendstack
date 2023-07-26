@@ -26,3 +26,12 @@ pnpm run check-types ||
             Are you seriously trying to write that? Make the changes required above.'
     false;
 )
+
+pnpm run test ||
+(
+    echo '❌👷🔨❌ Better call Bob... Because your tests failed ❌👷🔨❌
+            Next test failed: View the errors above to see why. 
+    '
+    false;
+)
+
