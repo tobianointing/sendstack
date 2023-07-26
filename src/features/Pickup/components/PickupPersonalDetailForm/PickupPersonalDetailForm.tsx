@@ -38,7 +38,7 @@ export const PickupPersonalDetailForm = (props: FormStepType) => {
       name: pickup.pickupName,
       phone_number: pickup.pickupNumber,
       alternative_phone_number: pickup.altPickupNumber,
-      email: pickup.pickupEmail,
+      email: "",
     },
   });
 
