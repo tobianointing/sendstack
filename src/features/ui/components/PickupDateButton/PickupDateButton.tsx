@@ -7,7 +7,7 @@ type Props = {
 export const PickupDateButton = (props: Props) => {
   return (
     <button
-      className="w-1/3 p-3 border rounded-md text-start hover:bg-slate-100 active:bg-slate-200 focus:outline-none"
+      className="w-1/3 p-3 border rounded-md text-start hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-50 focus:outline-none"
       type="button"
       onClick={props.onClick}
     >

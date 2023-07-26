@@ -20,9 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <main className="min-h-screen p-12  bg-white dark:bg-[#09090b]">
+        <main className="min-h-screen p-8 bg-white dark:bg-[#09090b]">
           <Header />
-          <main className="flex flex-col items-center justify-between">
+          <main className="flex flex-col items-center justify-center h-[70vh]">
             {children}
           </main>
         </main>

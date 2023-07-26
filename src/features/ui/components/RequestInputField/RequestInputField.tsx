@@ -12,7 +12,10 @@ export const RequestInputField = forwardRef<HTMLInputElement, Props>(
   ({ field, placeholder, type, Icon, ...props }, ref) => {
     return (
       <div className="relative">
-        <Icon className="absolute w-5 h-5 top-2/4 -translate-y-2/4 left-3 stroke-slate-500" />
+        <Icon
+          className="absolute w-5 h-5 top-2/4 -translate-y-2/4 left-3 stroke-slate-500"
+          data-testid="request-input-field-icon"
+        />
         <Input
           type={type ? type : "text"}
           placeholder={placeholder}

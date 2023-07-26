@@ -5,42 +5,49 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import deliveryMan from "@/assets/delivery-man.svg";
+import { Button } from "@/features/ui/button";
 import { RequestInputField } from "@/features/ui/components/RequestInputField";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/features/ui/form";
 import { useRequestState } from "@/store";
 import { FormStepType } from "@/types";
-import { Button } from "@/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/ui/form";
 import Image from "next/image";
 import { LuMail, LuPhone, LuUser } from "react-icons/lu";
 
 const FormSchema = z.object({
   name: z.string().nonempty(),
   phone_number: z.string().nonempty(),
-  alternative_phone_number: z.string().optional(),
+  alternative_phone_number: z.string().nonempty(),
   email: z.string().email().optional().or(z.literal("")),
 });
 
 export const DropoffPersonalDetailForm = (props: FormStepType) => {
+  const [dropoff, setDrop] = useRequestState((state) => [
+    state.drop,
+    state.setDrop,
+  ]);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: "",
-      phone_number: "",
-      alternative_phone_number: "",
+      name: dropoff.recipientName,
+      phone_number: dropoff.recipientNumber,
+      alternative_phone_number: dropoff.altRecipientNumber,
     },
   });
 
-  const [dropoff, setDropoffDetails] = useRequestState((state) => [
-    state.dropoff_details,
-    state.setDropoffDetails,
-  ]);
-
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setDropoffDetails({
+    setDrop({
       ...dropoff,
-      dropoffName: data.name,
-      dropoffNumber: data.phone_number,
-      altDropoffNumber: data.alternative_phone_number,
+      recipientName: data.name,
+      recipientNumber: data.phone_number,
+      altRecipientNumber: data.alternative_phone_number,
+      recipientEmail: data.email,
     });
 
     props.onNext && props.onNext();

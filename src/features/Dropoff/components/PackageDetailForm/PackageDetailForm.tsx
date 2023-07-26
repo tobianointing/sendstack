@@ -5,12 +5,14 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import deliveryMan from "@/assets/delivery-man.svg";
+import { Button } from "@/features/ui/button";
 import { RequestSelectField } from "@/features/ui/components/RequestSelectField";
+import { Form, FormField, FormItem, FormMessage } from "@/features/ui/form";
+import { useToast } from "@/features/ui/use-toast";
 import { useRequestState } from "@/store";
 import { FormStepType } from "@/types";
-import { Button } from "@/ui/button";
-import { Form, FormField, FormItem, FormMessage } from "@/ui/form";
 import Image from "next/image";
+import { useState } from "react";
 import { LuBox } from "react-icons/lu";
 import { fetchEstimatedPrice } from "../../services/fetchEstimatedPrice";
 
@@ -20,31 +22,45 @@ const FormSchema = z.object({
 });
 
 export const PackageDetailForm = (props: FormStepType) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  const [
-    pickup_details,
-    dropoff_details,
-    setEstimatedPrices,
-    setDropoffDetailAll,
-  ] = useRequestState((state) => [
-    state.pickup_details,
-    state.dropoff_details,
-    state.setEstimatedPrices,
-    state.setDropoffDetailAll,
-  ]);
+  const [pickup, drop, setEstimatedPrices, setDrops] = useRequestState(
+    (state) => [
+      state.pickup,
+      state.drop,
+      state.setEstimatedPrices,
+      state.setDrops,
+    ]
+  );
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    setDropoffDetailAll(dropoff_details);
-    console.log(data);
+    setDrops(drop);
 
-    const jsonData = await fetchEstimatedPrice(pickup_details, dropoff_details);
+    setIsLoading(true);
+    const jsonData = await fetchEstimatedPrice(pickup, drop);
 
     if (jsonData) {
+      setIsLoading(false);
+
+      if (jsonData?.status === false) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: jsonData?.message,
+          duration: 10000,
+        });
+
+        return;
+      }
+
       const estimatedPrice = {
-        dropoffId: dropoff_details.locationCode,
+        dropoffId: drop.locationCode,
         price: jsonData.data.price,
       };
       setEstimatedPrices(estimatedPrice);
@@ -108,7 +124,7 @@ export const PackageDetailForm = (props: FormStepType) => {
               </FormItem>
             )}
           />
-          <Button className="w-full" type="submit">
+          <Button className="w-full" type="submit" disabled={isLoading}>
             Continue
           </Button>
         </form>

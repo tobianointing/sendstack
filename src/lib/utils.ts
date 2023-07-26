@@ -11,6 +11,7 @@ export const handleDynamicDate = (
   form: UseFormReturn<
     {
       date: Date;
+      note: string;
     },
     any,
     undefined

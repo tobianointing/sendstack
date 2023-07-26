@@ -1,9 +1,14 @@
 import { Drop, Pickup } from "@/types";
 
-export const fetchEstimatedPrice = async (pickup: Pickup, drop: Drop) => {
+type PostRequestType = {
+  pickup: Pickup;
+  drops: Drop[];
+};
+
+export const postRequest = async (data: PostRequestType) => {
   try {
     const response = await fetch(
-      "https://sandbox.sendstack.africa/api/v1/deliveries/price",
+      "https://sandbox.sendstack.africa/api/v1/deliveries",
       {
         headers: {
           app_id: "0273264",
@@ -12,11 +17,7 @@ export const fetchEstimatedPrice = async (pickup: Pickup, drop: Drop) => {
           "Content-Type": "application/json",
         },
         method: "POST",
-        body: JSON.stringify({
-          pickupCode: pickup.locationCode,
-          dropoffCode: drop.locationCode,
-          pickupDate: pickup.pickupDate,
-        }),
+        body: JSON.stringify(data),
       }
     );
 

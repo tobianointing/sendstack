@@ -5,21 +5,32 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import manboxes from "@/assets/man-and-boxes.svg";
+import { Button } from "@/features/ui/button";
 import { RequestInputField } from "@/features/ui/components/RequestInputField";
 import { RequestSelectField } from "@/features/ui/components/RequestSelectField";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/features/ui/form";
 import { useRequestState } from "@/store";
 import { FormStepType } from "@/types";
-import { Button } from "@/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/ui/form";
 import Image from "next/image";
 import { LuHome, LuTruck } from "react-icons/lu";
-import { shallow } from "zustand/shallow";
 
 const FormSchema = z.object({
   pickup_area: z.string().nonempty(),
-  pickup_location: z.string().nonempty(),
-  pickup_option: z.string().nonempty(),
-  pickup_address: z.string().nonempty(),
+  pickup_location: z.string().nonempty({
+    message: "Please select a pickup location",
+  }),
+  pickup_option: z.string().nonempty({
+    message: "Please select a pickup option",
+  }),
+  pickup_address: z.string().nonempty({
+    message: "Please enter a pickup address",
+  }),
 });
 
 type Props = {
@@ -27,17 +38,21 @@ type Props = {
 };
 
 export const PickupAddressForm = (props: FormStepType & Props) => {
+  const [pickup, setPickup] = useRequestState((state) => [
+    state.pickup,
+    state.setPickup,
+  ]);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      pickup_location: pickup.locationCode,
+      pickup_address: pickup.address,
+    },
   });
 
-  const [pickup, setPickupDetails] = useRequestState(
-    (state) => [state.pickup_details, state.setPickupDetails],
-    shallow
-  );
-
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setPickupDetails({
+    setPickup({
       ...pickup,
       locationCode: data.pickup_location,
       address: data.pickup_address,

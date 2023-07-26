@@ -5,17 +5,23 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import deliveryMan from "@/assets/delivery-man.svg";
+import { Button } from "@/features/ui/button";
 import { RequestInputField } from "@/features/ui/components/RequestInputField";
 import { RequestSelectField } from "@/features/ui/components/RequestSelectField";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/features/ui/form";
 import { useRequestState } from "@/store";
 import { FormStepType } from "@/types";
-import { Button } from "@/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/ui/form";
 import Image from "next/image";
 import { LuHome, LuTruck } from "react-icons/lu";
 import { shallow } from "zustand/shallow";
 
-const FormSchema = z.object({
+export const FormSchema = z.object({
   dropoff_area: z.string().nonempty(),
   dropoff_location: z.string().nonempty(),
   dropoff_address: z.string().nonempty(),
@@ -26,18 +32,22 @@ type Props = {
 };
 
 export const DropoffAddressForm = (props: FormStepType & Props) => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  });
-
-  const [dropoff_details, setDropoffDetails] = useRequestState(
-    (state) => [state.dropoff_details, state.setDropoffDetails],
+  const [drop, setDrop] = useRequestState(
+    (state) => [state.drop, state.setDrop],
     shallow
   );
 
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      dropoff_location: drop.locationCode,
+      dropoff_address: drop.address,
+    },
+  });
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setDropoffDetails({
-      ...dropoff_details,
+    setDrop({
+      ...drop,
       locationCode: data.dropoff_location,
       address: data.dropoff_address,
     });

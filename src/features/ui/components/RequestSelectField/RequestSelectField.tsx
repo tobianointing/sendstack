@@ -1,13 +1,12 @@
-import { FormControl } from "@/ui/form";
+import { FormControl } from "@/features/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/ui/select";
-
-import { ItemType } from "../../../../types";
+} from "@/features/ui/select";
+import { ItemType } from "@/types";
 
 type Props = {
   field: any;
@@ -27,10 +26,10 @@ export const RequestSelectField = ({
       <Icon className="absolute w-5 h-5 top-2/4 -translate-y-2/4 left-3 stroke-slate-500" />
       <Select onValueChange={field.onChange} defaultValue={field.value}>
         <FormControl>
-          <SelectTrigger>
+          <SelectTrigger className=" dark:text-slate-50">
             <SelectValue
               placeholder={placeholder}
-              className="placeholder:text-slate-500"
+              className="placeholder:text-slate-500 dark:placeholder-slate-50 dark:text-slate-50"
             />
           </SelectTrigger>
         </FormControl>

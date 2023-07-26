@@ -10,7 +10,7 @@ export type ItemType = {
   value: string;
 };
 
-export interface DropLocation {
+export interface Drop {
   locationCode: string;
   address: string;
   recipientName: string;

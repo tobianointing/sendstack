@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 export const HomeScreen = () => {
-  const [formStep, setFormStep] = useState(9);
+  const [formStep, setFormStep] = useState(1);
 
   const handleNext = () => {
     setFormStep(formStep + 1);

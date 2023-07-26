@@ -3,70 +3,87 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import manboxes from "@/assets/man-and-boxes.svg";
+import { Button } from "@/features/ui/button";
 import { Calendar } from "@/features/ui/calendar";
 import { PickupDateButton } from "@/features/ui/components/PickupDateButton";
-import { Form, FormField, FormItem, FormMessage } from "@/features/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/features/ui/form";
+import { Popover, PopoverContent, PopoverTrigger } from "@/features/ui/popover";
+import { Textarea } from "@/features/ui/textarea";
 import { cn, handleDynamicDate } from "@/lib/utils";
 import { useRequestState } from "@/store";
 import { FormStepType } from "@/types";
-import { Button } from "@/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { addDays, format } from "date-fns";
-import Image from "next/image";
+import { addDays, format, subDays } from "date-fns";
 
 const FormSchema = z.object({
   date: z.date({
     required_error: "A pickup date is required.",
   }),
+  note: z
+    .string()
+    .min(4, {
+      message: "Note must be at least 4 characters.",
+    })
+    .max(160, {
+      message: "Note must not be longer than 30 characters.",
+    }),
 });
 
 export const PickupDateForm = (props: FormStepType) => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  });
-
-  const [pickup, setPickupDetails] = useRequestState((state) => [
-    state.pickup_details,
-    state.setPickupDetails,
+  const [pickup, setPickup] = useRequestState((state) => [
+    state.pickup,
+    state.setPickup,
   ]);
 
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      date: pickup.pickupDate ? new Date(pickup.pickupDate) : undefined,
+      note: pickup.note,
+    },
+  });
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setPickupDetails({
+    setPickup({
       ...pickup,
       pickupDate: format(data.date, "yyyy-MM-dd"),
+      note: data.note,
     });
     {
       props.onNext && props.onNext();
     }
   }
 
+  const isBefore10am = new Date().getTime() < new Date().setHours(10, 0, 0, 0);
+
+  const disabledDays = [
+    { from: new Date(1900, 0, 0), to: subDays(new Date(), 1) },
+    !isBefore10am && new Date(),
+  ];
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="flex flex-col gap-4">
-          <div className="flex relative justify-center w-full h-[200px]">
-            <Image
-              src={manboxes}
-              fill
-              className="object-contain"
-              alt="get form illustration"
-            />
-          </div>
           <div className="flex flex-col">
-            <label
-              className="inline-block mb-2 text-sm font-semibold"
-              htmlFor="Date"
-            >
+            <div className="inline-block mb-2 text-sm font-semibold dark:text-slate-50">
               Date
-            </label>
+            </div>
             <div className="flex gap-2">
-              <PickupDateButton
-                day={"Today"}
-                date={format(new Date(), "MMM do")}
-                onClick={() => handleDynamicDate(new Date(), form)}
-              />
+              {isBefore10am && (
+                <PickupDateButton
+                  day={"Today"}
+                  date={format(new Date(), "MMM do")}
+                  onClick={() => handleDynamicDate(new Date(), form)}
+                />
+              )}
               <PickupDateButton
                 day={"Tomorrow"}
                 date={format(addDays(new Date(), 1), "MMM do")}
@@ -77,6 +94,15 @@ export const PickupDateForm = (props: FormStepType) => {
                 date={format(addDays(new Date(), 2), "MMM do")}
                 onClick={() => handleDynamicDate(addDays(new Date(), 2), form)}
               />
+              {!isBefore10am && (
+                <PickupDateButton
+                  day={format(addDays(new Date(), 3), "iiii")}
+                  date={format(addDays(new Date(), 3), "MMM do")}
+                  onClick={() =>
+                    handleDynamicDate(addDays(new Date(), 2), form)
+                  }
+                />
+              )}
             </div>
           </div>
 
@@ -113,14 +139,31 @@ export const PickupDateForm = (props: FormStepType) => {
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
+                      disabled={disabledDays}
                       initialFocus
                       className="w-full"
                     />
                   </PopoverContent>
                 </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="note"
+            render={({ field }) => (
+              <FormItem className="flex flex-col mt-4">
+                <FormLabel htmlFor="note">Booking Note</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="e.g Kindly pickup the package from the gateman"
+                    className="resize-none"
+                    {...field}
+                    data-testid="note"
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

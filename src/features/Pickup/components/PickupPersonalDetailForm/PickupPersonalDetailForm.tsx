@@ -5,33 +5,45 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import manboxes from "@/assets/man-and-boxes.svg";
+import { Button } from "@/features/ui/button";
 import { RequestInputField } from "@/features/ui/components/RequestInputField";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/features/ui/form";
 import { useRequestState } from "@/store";
 import { FormStepType } from "@/types";
-import { Button } from "@/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/ui/form";
 import Image from "next/image";
 import { LuMail, LuPhone, LuUser } from "react-icons/lu";
 
 const FormSchema = z.object({
   name: z.string().nonempty(),
   phone_number: z.string().nonempty(),
-  alternative_phone_number: z.string().optional(),
+  alternative_phone_number: z.string().nonempty(),
   email: z.string().email().optional(),
 });
 
 export const PickupPersonalDetailForm = (props: FormStepType) => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  });
-
-  const [pickup, setPickupDetails] = useRequestState((state) => [
-    state.pickup_details,
-    state.setPickupDetails,
+  const [pickup, setPickup] = useRequestState((state) => [
+    state.pickup,
+    state.setPickup,
   ]);
 
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: pickup.pickupName,
+      phone_number: pickup.pickupNumber,
+      alternative_phone_number: pickup.altPickupNumber,
+      email: pickup.pickupEmail,
+    },
+  });
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setPickupDetails({
+    setPickup({
       ...pickup,
       pickupName: data.name,
       pickupNumber: data.phone_number,
