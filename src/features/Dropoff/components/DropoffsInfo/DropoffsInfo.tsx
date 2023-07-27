@@ -1,9 +1,10 @@
+import { AuthContext } from "@/contexts/AuthProviders";
 import { Button } from "@/features/ui/button";
 import { useToast } from "@/features/ui/use-toast";
 import { DropDefault, useRequestState } from "@/store";
 import { FormStepType } from "@/types";
 import format from "date-fns/format";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { postRequest } from "../../services/postRequest";
 import { DetailItemCard } from "../DetailItemCard";
 
@@ -16,6 +17,8 @@ export const DropoffsInfo = (props: FormStepType) => {
     state.setDrop,
   ]);
 
+  const { auth } = useContext(AuthContext);
+
   const { toast } = useToast();
 
   const handleNewRequest = async () => {
@@ -25,7 +28,7 @@ export const DropoffsInfo = (props: FormStepType) => {
     };
 
     setIsLoading(true);
-    const jsonData = await postRequest(data);
+    const jsonData = await postRequest(data, auth);
 
     console.log(jsonData);
 

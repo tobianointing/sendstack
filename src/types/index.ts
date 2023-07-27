@@ -32,3 +32,9 @@ export interface EstimatedPrices {
   price: number;
   dropoffId: string;
 }
+
+export interface AuthModel {
+  app_id: string;
+  app_secret: string;
+  balance: number;
+}

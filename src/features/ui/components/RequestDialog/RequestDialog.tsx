@@ -42,7 +42,6 @@ export const RequestDialog = (props: FormStepType) => {
         }
         const jsonData = await response.json();
         setLocations(jsonData.data[0].locals);
-        console.log(jsonData.data[0].locals);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -100,16 +99,14 @@ export const RequestDialog = (props: FormStepType) => {
               </Button>
             </div>
           </DialogTitle>
-          <DialogDescription>
-            <h1 className="my-4 text-lg font-medium text-center text-slate-900">
-              {props.formStep === 1 && "Sender details"}
-              {props.formStep === 2 && "Pickup address"}
-              {props.formStep === 3 && "Pickup date"}
-              {props.formStep === 4 && "Receiver details"}
-              {props.formStep === 5 && "Dropoff address"}
-              {props.formStep === 6 && "Dropoff Item details"}
-              {props.formStep === 7 && "Result"}
-            </h1>
+          <DialogDescription className="text-lg font-medium text-center text-slate-900">
+            {props.formStep === 1 && "Sender details"}
+            {props.formStep === 2 && "Pickup address"}
+            {props.formStep === 3 && "Pickup date"}
+            {props.formStep === 4 && "Receiver details"}
+            {props.formStep === 5 && "Dropoff address"}
+            {props.formStep === 6 && "Dropoff Item details"}
+            {props.formStep === 7 && "Result"}
           </DialogDescription>
         </DialogHeader>
         {props.formStep === 1 && (

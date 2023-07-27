@@ -20,3 +20,7 @@ export const handleDynamicDate = (
   form.setValue("date", date);
   console.log(date);
 };
+
+export const currencyFormatter = (value: number) => {
+  return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+};

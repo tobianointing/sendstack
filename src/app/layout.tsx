@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/contexts/AuthProviders";
 import { Header } from "@/features/Layout/components/Header";
 import { Toaster } from "@/features/ui/toaster";
 import type { Metadata } from "next";
@@ -20,13 +21,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <main className="min-h-screen p-8 bg-white dark:bg-[#09090b]">
-          <Header />
-          <main className="flex flex-col items-center justify-center h-[70vh]">
-            {children}
+        <AuthProvider>
+          <main className="min-h-screen p-8 bg-white dark:bg-[#09090b]">
+            <Header />
+            <main className="flex flex-col items-center justify-center h-[70vh]">
+              {children}
+            </main>
           </main>
-        </main>
-        <Toaster />
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );

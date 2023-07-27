@@ -38,6 +38,7 @@ export const DropoffPersonalDetailForm = (props: FormStepType) => {
       name: dropoff.recipientName,
       phone_number: dropoff.recipientNumber,
       alternative_phone_number: dropoff.altRecipientNumber,
+      email: "",
     },
   });
 

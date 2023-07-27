@@ -1,30 +1,31 @@
-import { Drop, Pickup } from "@/types";
+import axios from "@/services/axios";
+import { AuthModel, Drop, Pickup } from "@/types";
 
 type PostRequestType = {
   pickup: Pickup;
   drops: Drop[];
 };
 
-export const postRequest = async (data: PostRequestType) => {
+export const postRequest = async (
+  data: PostRequestType,
+  headers: AuthModel
+) => {
   try {
-    const response = await fetch(
-      "https://sandbox.sendstack.africa/api/v1/deliveries",
-      {
-        headers: {
-          app_id: "0273264",
-          app_secret: "CV5KFQ1ND243N66SPCCXD3W633V27K5K",
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(data),
-      }
-    );
+    const response = await axios.post("/deliveries", data, {
+      headers: {
+        app_id: headers.app_id,
+        app_secret: headers.app_secret,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
 
-    const jsonData = await response.json();
-    return jsonData;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return null;
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status == 401) {
+      return error.response.data;
+    }
+    console.log(error);
+    return;
   }
 };

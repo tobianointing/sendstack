@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import deliveryMan from "@/assets/delivery-man.svg";
+import { AuthContext } from "@/contexts/AuthProviders";
 import { Button } from "@/features/ui/button";
 import { RequestSelectField } from "@/features/ui/components/RequestSelectField";
 import { Form, FormField, FormItem, FormMessage } from "@/features/ui/form";
@@ -12,7 +13,7 @@ import { useToast } from "@/features/ui/use-toast";
 import { useRequestState } from "@/store";
 import { FormStepType } from "@/types";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { LuBox } from "react-icons/lu";
 import { fetchEstimatedPrice } from "../../services/fetchEstimatedPrice";
 
@@ -23,6 +24,8 @@ const FormSchema = z.object({
 
 export const PackageDetailForm = (props: FormStepType) => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const { auth } = useContext(AuthContext);
 
   const { toast } = useToast();
 
@@ -43,7 +46,7 @@ export const PackageDetailForm = (props: FormStepType) => {
     setDrops(drop);
 
     setIsLoading(true);
-    const jsonData = await fetchEstimatedPrice(pickup, drop);
+    const jsonData = await fetchEstimatedPrice(pickup, drop, auth);
 
     if (jsonData) {
       setIsLoading(false);
