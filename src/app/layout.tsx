@@ -22,9 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className}`}>
         <AuthProvider>
-          <main className="min-h-screen p-8 bg-white dark:bg-[#09090b]">
+          <main className="min-h-screen p-4 md:p-8 bg-white dark:bg-[#09090b]">
             <Header />
-            <main className="flex flex-col items-center justify-center h-[70vh]">
+            <main className="flex flex-col md:items-center justify-center h-[70vh]">
               {children}
             </main>
           </main>

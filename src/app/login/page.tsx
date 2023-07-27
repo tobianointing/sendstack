@@ -60,7 +60,6 @@ export default function Login() {
         description: res.message,
         duration: 10000,
       });
-      router.back();
     }
   }
 
@@ -72,7 +71,7 @@ export default function Login() {
   }, [auth, router]);
 
   return (
-    <div className="w-[375px] border p-3 rounded-lg flex flex-col gap-4">
+    <div className="w-full md:w-[425px] border p-3 rounded-lg flex flex-col gap-4 mt-16 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-50">
       <div className="flex relative justify-center w-full h-[200px]">
         <Image
           src={loginImage}
