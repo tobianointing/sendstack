@@ -1,0 +1,21 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+pnpm run test ||
+(
+    echo '❌👷🔨❌ Better call Bob... Because your tests failed ❌👷🔨❌
+            Next test failed: View the errors above to see why. 
+    '
+    false;
+)
+
+pnpm run build ||
+(
+    echo '❌👷🔨❌ Better call Bob... Because your build failed ❌👷🔨❌
+            Next build failed: View the errors above to see why. 
+    '
+    false;
+)
+
+# If everything passes... Now we can commit
+echo '✅✅✅✅ You win this time... I am committing this now. ✅✅✅✅'

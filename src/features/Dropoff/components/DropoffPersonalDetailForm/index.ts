@@ -1,0 +1,1 @@
+export { DropoffPersonalDetailForm } from "./DropoffPersonalDetailForm";
