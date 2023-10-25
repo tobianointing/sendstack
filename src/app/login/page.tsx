@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/features/ui/form";
 import { useToast } from "@/features/ui/use-toast";
+import { setCookie } from "cookies-next";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { LuKey } from "react-icons/lu";
@@ -53,6 +54,9 @@ export default function Login() {
       };
       setAuth(userData);
       localStorage.setItem("user", JSON.stringify(userData));
+      setCookie("user", JSON.stringify(userData));
+      setCookie("app_secret", data.app_secret);
+      setCookie("loggedIn", true);
     } else {
       toast({
         variant: "destructive",

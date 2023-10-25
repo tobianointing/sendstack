@@ -4,32 +4,10 @@ import { AuthContext } from "@/contexts/AuthProviders";
 import { RequestDialog } from "@/features/ui/components/RequestDialog";
 import { currencyFormatter } from "@/lib/utils";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-
-function getCurrentUser() {
-  const user = localStorage.getItem("user")!;
-  return JSON.parse(user);
-}
-
-const formatter = new Intl.NumberFormat(undefined, {
-  style: "currency",
-  currency: "NGN",
-
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0,
-});
+import { useContext, useState } from "react";
 
 export const HomeScreen = () => {
-  const { auth, setAuth } = useContext(AuthContext);
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!auth) {
-      router.push("/login");
-    }
-  }, [router, auth]);
+  const { auth } = useContext(AuthContext);
 
   const [formStep, setFormStep] = useState(1);
 

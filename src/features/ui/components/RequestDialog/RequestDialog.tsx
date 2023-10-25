@@ -21,6 +21,7 @@ import {
 import { FormStepType } from "@/types";
 import { useEffect, useState } from "react";
 import { LuBox, LuChevronLeft, LuTruck } from "react-icons/lu";
+import { ScrollArea } from "../../scroll-area";
 
 export const RequestDialog = (props: FormStepType) => {
   const [locations, setLocations] = useState([]);
@@ -60,92 +61,94 @@ export const RequestDialog = (props: FormStepType) => {
           </div>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] max-h-screen box-border hover:overflow-y-auto dark:text-slate-50">
-        {props.formStep && props.formStep > 1 && (
-          <Button
-            variant={"ghost"}
-            size={"icon"}
-            onClick={() =>
-              props.onStepChange &&
-              props.onStepChange(props.formStep ? props.formStep - 1 : 1)
-            }
-            className="absolute left-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 data-[state=open]:text-slate-500 dark:ring-offset-slate-950 dark:focus:ring-slate-800 dark:data-[state=open]:bg-slate-800 dark:data-[state=open]:text-slate-400"
-          >
-            <LuChevronLeft className="w-4 h-4" />
-          </Button>
-        )}
-        <DialogHeader>
-          <DialogTitle className="flex justify-center">
-            <div className="flex p-1 border rounded-3xl">
-              <Button
-                variant={
-                  props.formStep && props.formStep < 4 ? "default" : "ghost"
-                }
-                className="flex items-center gap-2 px-4 cursor-pointer h-9 rounded-3xl"
-                onClick={() => props.onStepChange && props.onStepChange(1)}
-              >
-                <LuBox className="w-4 h-4" />
-                <span className="text-sm">Pickup</span>
-              </Button>
-              <Button
-                variant={
-                  props.formStep && props.formStep > 3 ? "default" : "ghost"
-                }
-                className="flex items-center gap-2 px-4 h-9 rounded-3xl"
-                onClick={() => props.onStepChange && props.onStepChange(4)}
-              >
-                <LuTruck className="w-4 h-4" />
-                <span className="text-sm">Dropoff</span>
-              </Button>
-            </div>
-          </DialogTitle>
-          <DialogDescription className="text-lg font-medium text-center text-slate-900">
-            {props.formStep === 1 && "Sender details"}
-            {props.formStep === 2 && "Pickup address"}
-            {props.formStep === 3 && "Pickup date"}
-            {props.formStep === 4 && "Receiver details"}
-            {props.formStep === 5 && "Dropoff address"}
-            {props.formStep === 6 && "Dropoff Item details"}
-            {props.formStep === 7 && "Result"}
-          </DialogDescription>
-        </DialogHeader>
-        {props.formStep === 1 && (
-          <PickupPersonalDetailForm onNext={props.onNext} />
-        )}
-        {props.formStep === 2 && (
-          <PickupAddressForm
-            onPrev={props.onPrev}
-            onNext={props.onNext}
-            locations={locations}
-          />
-        )}
-        {props.formStep === 3 && (
-          <PickupDateForm onPrev={props.onPrev} onNext={props.onNext} />
-        )}
-        {props.formStep === 4 && (
-          <DropoffPersonalDetailForm
-            onPrev={props.onPrev}
-            onNext={props.onNext}
-          />
-        )}
-        {props.formStep === 5 && (
-          <DropoffAddressForm
-            onPrev={props.onPrev}
-            onNext={props.onNext}
-            locations={locations}
-          />
-        )}
-        {props.formStep === 6 && <PackageDetailForm onNext={props.onNext} />}
-        {props.formStep === 7 && (
-          <DropoffsInfo
-            onNext={props.onNext}
-            onStepChange={props.onStepChange}
-          />
-        )}
+      <DialogContent className="sm:max-w-[425px] box-border dark:text-slate-50">
+        <ScrollArea className="w-full max-h-screen p-6">
+          {props.formStep && props.formStep > 1 && (
+            <Button
+              variant={"ghost"}
+              size={"icon"}
+              onClick={() =>
+                props.onStepChange &&
+                props.onStepChange(props.formStep ? props.formStep - 1 : 1)
+              }
+              className="absolute left-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 data-[state=open]:text-slate-500 dark:ring-offset-slate-950 dark:focus:ring-slate-800 dark:data-[state=open]:bg-slate-800 dark:data-[state=open]:text-slate-400"
+            >
+              <LuChevronLeft className="w-4 h-4" />
+            </Button>
+          )}
+          <DialogHeader>
+            <DialogTitle className="flex justify-center">
+              <div className="flex p-1 border rounded-3xl">
+                <Button
+                  variant={
+                    props.formStep && props.formStep < 4 ? "default" : "ghost"
+                  }
+                  className="flex items-center gap-2 px-4 cursor-pointer h-9 rounded-3xl"
+                  onClick={() => props.onStepChange && props.onStepChange(1)}
+                >
+                  <LuBox className="w-4 h-4" />
+                  <span className="text-sm">Pickup</span>
+                </Button>
+                <Button
+                  variant={
+                    props.formStep && props.formStep > 3 ? "default" : "ghost"
+                  }
+                  className="flex items-center gap-2 px-4 h-9 rounded-3xl"
+                  onClick={() => props.onStepChange && props.onStepChange(4)}
+                >
+                  <LuTruck className="w-4 h-4" />
+                  <span className="text-sm">Dropoff</span>
+                </Button>
+              </div>
+            </DialogTitle>
+            <DialogDescription className="text-lg font-medium text-center text-slate-900">
+              {props.formStep === 1 && "Sender details"}
+              {props.formStep === 2 && "Pickup address"}
+              {props.formStep === 3 && "Pickup date"}
+              {props.formStep === 4 && "Receiver details"}
+              {props.formStep === 5 && "Dropoff address"}
+              {props.formStep === 6 && "Dropoff Item details"}
+              {props.formStep === 7 && "Result"}
+            </DialogDescription>
+          </DialogHeader>
+          {props.formStep === 1 && (
+            <PickupPersonalDetailForm onNext={props.onNext} />
+          )}
+          {props.formStep === 2 && (
+            <PickupAddressForm
+              onPrev={props.onPrev}
+              onNext={props.onNext}
+              locations={locations}
+            />
+          )}
+          {props.formStep === 3 && (
+            <PickupDateForm onPrev={props.onPrev} onNext={props.onNext} />
+          )}
+          {props.formStep === 4 && (
+            <DropoffPersonalDetailForm
+              onPrev={props.onPrev}
+              onNext={props.onNext}
+            />
+          )}
+          {props.formStep === 5 && (
+            <DropoffAddressForm
+              onPrev={props.onPrev}
+              onNext={props.onNext}
+              locations={locations}
+            />
+          )}
+          {props.formStep === 6 && <PackageDetailForm onNext={props.onNext} />}
+          {props.formStep === 7 && (
+            <DropoffsInfo
+              onNext={props.onNext}
+              onStepChange={props.onStepChange}
+            />
+          )}
 
-        {props.formStep === 8 && (
-          <SuccessCard onStepChange={props.onStepChange} />
-        )}
+          {props.formStep === 8 && (
+            <SuccessCard onStepChange={props.onStepChange} />
+          )}
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
