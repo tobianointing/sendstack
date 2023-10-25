@@ -2,6 +2,12 @@
 
 SendStack Delivery Public Link [sendstack.co](https://SendStackDelivery.co)
 
+### App Id
+0273264
+
+### App Secret Key
+CV5KFQ1ND243N66SPCCXD3W633V27K5K
+
 ## Table of Content:
 
 - [About The App](#about-the-app)
